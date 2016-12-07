@@ -2,6 +2,8 @@
 
 describe("Given Gilded Rose", function () {
 
+  console.log("asdjf;lajsdl;fk")
+
   describe("When shop contains a normal item before the sell date", function () {
 
     it("quality and sell in days remaining should go down", function () {
@@ -64,6 +66,9 @@ describe("Given Gilded Rose", function () {
       expect(item.sell_in).toEqual(8)
       expect(item.quality).toEqual(0)
     });
+
+    // missing test: sell_in === 0, quality === 1 then quality should be zero as it does not go negative.
+
   });
   describe('When shop contains aged bree', function () {
     it('quality increase as it ages', function () {
@@ -91,6 +96,7 @@ describe("Given Gilded Rose", function () {
       expect(item.sell_in).toEqual(8)
       expect(item.quality).toEqual(50)
     })
+
   })
 
   describe('Given the shop only contains Sulfuras', function () {
@@ -106,7 +112,7 @@ describe("Given Gilded Rose", function () {
    })
   })
 
-  describe('Given the shop only contains back stage', function () {
+  describe('Given the shop only contains back stage tickets', function () {
    it('quality increases as sell in days remaining decreases', function() {
      var item = new Item('Backstage passes to a TAFKAL80ETC concert', 20, 0)
      items = []
@@ -157,7 +163,7 @@ describe("Given Gilded Rose", function () {
       expect(item.sell_in).toEqual(0)
       expect(item.quality).toEqual(33)
     })
-    it('quality drops to zero after the concet', function() {
+    it('quality drops to zero after the concert', function() {
       var item = new Item('Backstage passes to a TAFKAL80ETC concert', 0, 50)
       items = []
       items.push(item);

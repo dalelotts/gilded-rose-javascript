@@ -1,4 +1,6 @@
-function Item(name, sell_in, quality) {
+'use strict'
+
+function Item (name, sell_in, quality) {
   this.name = name;
   this.sell_in = sell_in;
   this.quality = quality;
@@ -13,50 +15,97 @@ items.push(new Item('Sulfuras, Hand of Ragnaros', 0, 80));
 items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20));
 items.push(new Item('Conjured Mana Cake', 3, 6));
 
-function update_quality() {
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].name != 'Aged Brie' && items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-      if (items[i].quality > 0) {
-        if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-          items[i].quality = items[i].quality - 1
-        }
-      }
+function update_quality () {
+
+  items.forEach((item) => {
+
+    switch (item.name) {
+      case 'Aged Brie':
+        brieAging(item)
+        break
+      case 'Sulfuras, Hand of Ragnaros':
+
+        break
+      case 'Backstage passes to a TAFKAL80ETC concert':
+        ticketAging(item)
+        break
+      default:
+        normalAging(item)
+
+    }
+  })
+
+}
+
+function conditional(condition, trueDelegate, falseDelegate) {
+  return (item) => {
+    if (condition(item)) {
+      console.log("true")
+       return trueDelegate(item)
     } else {
-      if (items[i].quality < 50) {
-        items[i].quality = items[i].quality + 1
-        if (items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-          if (items[i].sell_in < 11) {
-            if (items[i].quality < 50) {
-              items[i].quality = items[i].quality + 1
-            }
-          }
-          if (items[i].sell_in < 6) {
-            if (items[i].quality < 50) {
-              items[i].quality = items[i].quality + 1
-            }
-          }
-        }
-      }
+      console.log("false")
+      return falseDelegate(item)
     }
-    if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-      items[i].sell_in = items[i].sell_in - 1;
-    }
-    if (items[i].sell_in < 0) {
-      if (items[i].name != 'Aged Brie') {
-        if (items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-          if (items[i].quality > 0) {
-            if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-              items[i].quality = items[i].quality - 1
-            }
-          }
-        } else {
-          items[i].quality = items[i].quality - items[i].quality
-        }
-      } else {
-        if (items[i].quality < 50) {
-          items[i].quality = items[i].quality + 1
-        }
-      }
-    }
+  }
+}
+
+
+function zeroQuality(item) {
+  item.quality = 0
+  return item
+}
+
+
+var decreaseSellIn= decreaseNumber('sell_in');
+var decreaseQuality= decreaseNumber('quality');
+var increaseQuality= increaseNumber('quality');
+var expireOrIncreaseQuality = conditional((item) => item.sell_in < 0, zeroQuality, increaseQuality)
+var increaseQualityLessThan10DaysOrNoOp = conditional((item) => item.sell_in < 10, increaseQuality, (item) => item)
+var increaseQualityLessThan5DaysOrNoOp = conditional((item) => item.sell_in < 5, increaseQuality, (item) => item)
+
+function ticketAging (item) {
+  expireOrIncreaseQuality(
+    increaseQualityLessThan10DaysOrNoOp(
+      increaseQualityLessThan5DaysOrNoOp(
+        decreaseSellIn(item)
+      )
+    )
+  )
+}
+
+function normalAging (item) {
+
+  decreaseSellIn(item)
+
+  if (item.quality === 0) {
+    return
+  }
+
+  decreaseQuality(item)
+
+  if (item.sell_in < 0) {
+    decreaseQuality(item)
+  }
+}
+
+function brieAging (item) {
+  decreaseSellIn(item)
+  if (item.quality < 50) {
+    increaseQuality(item)
+  }
+}
+
+
+
+function decreaseNumber (property) {
+  return (item) => {
+    item[property] -= 1
+    return item
+  }
+}
+function increaseNumber (property) {
+  return (item) => {
+    item[property] += 1
+    return item
   }
 }
