@@ -159,8 +159,5 @@ describe("Give Gilded Rose ", function() {
     expect(items[0].quality).toEqual(6);
     expect(items[0].sell_in).toEqual(-2);
   })
-  it("Loads Items and Strategy arrays into and Inventory array", function() {
-    new_update_quality();
-  })
 
 });
