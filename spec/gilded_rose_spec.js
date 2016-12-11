@@ -180,4 +180,14 @@ describe("Given Gilded Rose", function () {
       expect(item.quality).toEqual(0)
     })
   })
+  it('if item is AgingItem, updateQuality delegates to AgingItem.update()', () =>{
+    const item = new AgingItem('Backstage passes to a TAFKAL80ETC concert', 0, 50, () =>{}, () =>{})
+    spyOn(item, 'update')
+    guildedRose.items = []
+    guildedRose.items.push(item);
+
+    guildedRose.updateQuality()
+
+    expect(item.update).toHaveBeenCalled();
+  })
 })

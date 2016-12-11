@@ -15,6 +15,11 @@ class GuildedRose {
   updateQuality () {
     this.items.forEach((item) => {
 
+      if (item.update) {
+        item.update()
+        return
+      }
+
       if (item.name === 'Sulfuras, Hand of Ragnaros') {
         return
       }
