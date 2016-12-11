@@ -15,18 +15,20 @@ class GuildedRose {
   updateQuality () {
     this.items.forEach((item) => {
 
+      if (item.name === 'Sulfuras, Hand of Ragnaros') {
+        return
+      }
+
+      item.sell_in -= 1
+
       switch (item.name) {
         case  'Aged Brie':
-          item.sell_in -= 1
+
           if (item.quality < 50) {
             item.quality += 1
           }
           break
-        case 'Sulfuras, Hand of Ragnaros':
-          // No update to sell_in or quality
-          break
         case 'Backstage passes to a TAFKAL80ETC concert' :
-          item.sell_in -= 1
           item.quality += 1
           if (item.sell_in < 10) {
             item.quality += 1
@@ -40,8 +42,6 @@ class GuildedRose {
 
           break
         default:
-          item.sell_in -= 1
-
           if (item.quality === 0) {
             return
           }
