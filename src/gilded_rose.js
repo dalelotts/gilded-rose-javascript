@@ -20,6 +20,9 @@ class GuildedRose {
         if (item.quality < 50) {
           item.quality += 1
         }
+      } else if  (item.name === 'Sulfuras, Hand of Ragnaros') {
+        // No update to sell_in or quality
+
       } else {
 
         if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
