@@ -1,5 +1,8 @@
-describe("Given Aging Item",  () => {
-  "use strict"
+/* globals AgingItem */
+/* eslint-env jasmine */
+
+describe('Given Aging Item', () => {
+  'use strict'
 
   it('update method delegates to sellInStrategy function', () => {
     const sellInStrategy = jasmine.createSpy('sellInStrategy')
@@ -14,4 +17,3 @@ describe("Given Aging Item",  () => {
     expect(qualityStrategy).toHaveBeenCalledWith(agingItem)
   })
 })
-
